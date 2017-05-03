@@ -8,6 +8,10 @@ pipeline {
 		VERSION       = '1.0.0.${env.BUILD_NUMBER}'
 	}
 
+	tools {
+		MSBuild 'Default'
+	}
+
 	stages {
 
 		stage('Build') { 
@@ -15,8 +19,10 @@ pipeline {
 
 				try {
 					bat 'nuget restore WindowsPlayground.sln'
-				} catch {
-					// no packages in use
+				} 
+				catch (ex)
+				{
+					echo "no packages in use for ${env.PROJECT_NAME}"
 				}
 				
 				bat "\"${tool 'MSBuild'}\" WindowsPlayground.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.0"
