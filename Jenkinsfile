@@ -12,7 +12,13 @@ pipeline {
 
 		stage('Build') { 
 			steps { 
-				bat 'nuget restore WindowsPlayground.sln'
+
+				try {
+					bat 'nuget restore WindowsPlayground.sln'
+				} catch {
+					// no packages in use
+				}
+				
 				bat "\"${tool 'MSBuild'}\" WindowsPlayground.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.0"
 			}
 		}
