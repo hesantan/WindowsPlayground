@@ -1,7 +1,8 @@
 {
   "TestRunner": "",
-  "TestPlatform": "x86",
-  "TestApartmentState": "STA",
+  "TestPlatform": "x64",
+  "TestApartmentState": "MTA",
+  "TestAdapterMode": "Standard",
   "TestSettings": "",
   "ExcludeAttributes": "System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute",
   "ExcludeFiles": "",

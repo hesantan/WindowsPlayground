@@ -2,6 +2,7 @@ pipeline {
 	agent any 
 
 	environment {
+		PROJECT_NAME  = 'WindowsPlayground'
 		SOLUTION_NAME = 'WindowsPlayground.sln'
 		CONFIGURATION = 'Debug'
 		VERSION       = '1.0.0.${env.BUILD_NUMBER}'
@@ -11,8 +12,8 @@ pipeline {
 
 		stage('Build') { 
 			steps { 
-				bat 'nuget restore ${env.SOLUTION_NAME}'
-				bat "\"${tool 'MSBuild'}\" ${env.SOLUTION_NAME} /p:Configuration=${env.CONFIGURATION} /p:Platform=\"Any CPU\" /p:ProductVersion=${env.VERSION}"
+				bat 'nuget restore WindowsPlayground.sln'
+				bat "\"${tool 'MSBuild'}\" WindowsPlayground.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.0"
 			}
 		}
 
@@ -24,7 +25,7 @@ pipeline {
 
 		stage('Archive') {
 			steps {
-				archiveArtifacts 'ProjectName/bin/Debug/**'
+				archiveArtifacts 'WindowsPlayground/bin/Debug/**'
 			}
 		}
 
