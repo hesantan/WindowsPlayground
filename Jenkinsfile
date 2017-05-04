@@ -22,10 +22,14 @@ pipeline {
 				} 
 				catch (ex)
 				{
-					echo "no packages in use for ${env.PROJECT_NAME}"
+					echo "no packages in use for this solution"
 				}
 				
-				bat "\"${tool 'MSBuild'}\" WindowsPlayground.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.0"
+				try {
+					bat "\"${tool 'MSBuild'}\" WindowsPlayground.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.0"
+				} catch (ex) {
+					echo "Soluton failed to build"
+				}
 			}
 		}
 
