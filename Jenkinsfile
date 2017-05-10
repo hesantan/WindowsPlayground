@@ -11,7 +11,7 @@ pipeline {
 		SOLUTION_NAME = "${env.PROJECT_NAME}.sln"
 		CONFIGURATION = "${params.CONFIGURATION}"
 		VERSION       = "1.0.0.${env.BUILD_NUMBER}"
-		MSBUILD_EXE   = "\"${tool 'MSBuild-Default'}\\msbuild.exe\""
+		MSBUILD_EXE   = "${tool 'MSBuild-Default'}\\msbuild.exe"
 		MSBUILD_SWITCHES = "/m /val /nologo /v:q /p:Configuration=${env.CONFIGURATION} /p:Platform=\"Any CPU\" /p:ProductVersion=${env.VERSION}"
 		ROBOCOPY_SOURCE = "${env.WORKSPACE}\\WindowsPlayground\\bin\\Debug\\"
 		ROBOCOPY_DESTINATION = "${env.WORKSPACE}\\Deploy\\"
