@@ -10,7 +10,7 @@ pipeline {
 		stage('Build') { 
 			steps { 
 				bat 'nuget restore WindowsPlayground.sln'
-				bat "\"${tool 'MSBuild-Default'}\" WindowsPlayground.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.0"
+				bat "\"${tool 'MSBuild-Default'}\\msbuild.exe\" WindowsPlayground.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.0"
 			}
 		}
 		stage('Test') {
