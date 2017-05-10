@@ -3,18 +3,24 @@ pipeline {
 	triggers {
         pollSCM('* * * * *')
     }
-	parameters { string(name: 'TESTING_ENVIROMENT', defaultValue: 'development', description: 'The enviroment of the test execution') }
+	parameters {
+		string(name: 'CONFIGURATION', defaultValue: 'Debug', description: 'The configuration to be use when build the project.') 
+	}
 	environment {
 		PROJECT_NAME  = 'WindowsPlayground'
-		SOLUTION_NAME = 'WindowsPlayground.sln'
-		CONFIGURATION = 'Debug'
-		VERSION       = '1.0.0.${env.BUILD_NUMBER}'
+		SOLUTION_NAME = "${env.PROJECT_NAME}.sln"
+		CONFIGURATION = "${params.CONFIGURATION}"
+		VERSION       = "1.0.0.${env.BUILD_NUMBER}"
+		MSBUILD_EXE   = "\"${tool 'MSBuild-Default'}\\msbuild.exe\""
+		MSBUILD_SWITCHES = "/m /val /nologo /v:q /p:Configuration=${env.CONFIGURATION} /p:Platform=\"Any CPU\" /p:ProductVersion=${env.VERSION}"
+		ROBOCOPY_SOURCE = "${env.WORKSPACE}\\WindowsPlayground\\bin\\Debug\\"
+		ROBOCOPY_DESTINATION = "${env.WORKSPACE}\\Deploy\\"
 	}
 	stages {
 		stage('Build') { 
 			steps { 
-				bat 'nuget restore WindowsPlayground.sln'
-				bat "\"${tool 'MSBuild-Default'}\\msbuild.exe\" WindowsPlayground.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.0"
+				bat 'nuget restore ${env.SOLUTION_NAME}'
+				bat "${env.MSBUILD_EXE} ${env.SOLUTION_NAME} ${env.MSBUILD_SWITCHES}"
 			}
 		}
 		stage('Test') {
@@ -24,12 +30,12 @@ pipeline {
 		}
 		stage('Archive') {
 			steps {
-				archiveArtifacts 'WindowsPlayground/bin/Debug/**'
+				archiveArtifacts "${env.PROJECT_NAME}/bin/${env.CONFIGURATION}/**"
 			}
 		}
 		stage('Deploy') {
 			steps {
-				bat "ROBOCOPY \"${env.WORKSPACE}\\WindowsPlayground\\bin\\Debug\\\" \"${env.WORKSPACE}\\Deploy\\\""
+				bat "ROBOCOPY ${env.ROBOCOPY_SOURCE} ${env.ROBOCOPY_DESTINATION} /MIR /MT /R:2 /W:5"
 			}
 		}
 	}
