@@ -20,7 +20,7 @@ pipeline {
 				MSBUILD_SWITCHES = "/m /val /nologo /v:q /p:Configuration=${env.CONFIGURATION} /p:Platform=\"${env.PLATFORM}}\" /p:ProductVersion=${env.VERSION}"
             }
 			steps { 
-				bat 'nuget restore ${env.SOLUTION_NAME}'
+				bat "nuget restore ${env.SOLUTION_NAME}"
 				bat "\"${env.MSBUILD_EXE}\" ${env.SOLUTION_NAME} ${env.MSBUILD_SWITCHES}"
 			}
 		}
