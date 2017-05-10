@@ -16,7 +16,7 @@ pipeline {
 	stages {
 		stage('Build') { 
 			environment {
-				MSBUILD_SWITCHES = "/m /val /nologo /v:q /p:Configuration=${env.CONFIGURATION} /p:Platform=\"${env.PLATFORM}}\" /p:ProductVersion=${env.VERSION}"
+				MSBUILD_SWITCHES = "/m /val /nologo /v:q /p:Configuration=${env.CONFIGURATION} /p:Platform=\"${env.PLATFORM}\" /p:ProductVersion=${env.VERSION}"
             }
 			steps { 
 				bat "nuget restore ${env.SOLUTION_NAME}"
