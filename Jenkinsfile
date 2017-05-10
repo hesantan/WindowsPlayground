@@ -16,7 +16,8 @@ pipeline {
 	stages {
 		stage('Build') { 
 			environment {
-				MSBUILD_SWITCHES = "/m /v:q /val /nologo /p:Configuration=${env.CONFIGURATION} /p:Platform=\"${env.PLATFORM}\" /p:ProductVersion=${env.VERSION}"
+				MSBUILD_OPTIONAL_SWITCHES = "/val"
+				MSBUILD_SWITCHES = "/m /v:q /nologo /p:Configuration=${env.CONFIGURATION} /p:Platform=\"${env.PLATFORM}\" /p:ProductVersion=${env.VERSION}"
             }
 			steps { 
 				bat "nuget restore ${env.SOLUTION_NAME}"
@@ -24,6 +25,9 @@ pipeline {
 			}
 		}
 		stage('Test') {
+			environment {
+				TEST_PROJECTS_PATTERNS = "*.Test"
+			}
 			steps {
 				echo 'Work'
 			}
