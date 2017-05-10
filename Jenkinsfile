@@ -15,13 +15,12 @@ pipeline {
 	}
 	stages {
 		stage('Build') { 
-			environment { 
-                MSBUILD_EXE   = "\"${tool 'MSBuild-Default'}\\msbuild.exe\""
+			environment {
 				MSBUILD_SWITCHES = "/m /val /nologo /v:q /p:Configuration=${env.CONFIGURATION} /p:Platform=\"${env.PLATFORM}}\" /p:ProductVersion=${env.VERSION}"
             }
 			steps { 
 				bat "nuget restore ${env.SOLUTION_NAME}"
-				bat "${env.MSBUILD_EXE} ${env.SOLUTION_NAME} ${env.MSBUILD_SWITCHES}"
+				bat "\"${tool 'MSBuild-Default'}\\msbuild.exe\" ${env.SOLUTION_NAME} ${env.MSBUILD_SWITCHES}"
 			}
 		}
 		stage('Test') {
