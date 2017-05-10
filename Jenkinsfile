@@ -1,5 +1,9 @@
 pipeline {
 	agent any 
+	triggers {
+        pollSCM('* * * * *')
+    }
+	parameters { string(name: 'TESTING_ENVIROMENT', defaultValue: 'development', description: 'The enviroment of the test execution') }
 	environment {
 		PROJECT_NAME  = 'WindowsPlayground'
 		SOLUTION_NAME = 'WindowsPlayground.sln'
@@ -25,7 +29,7 @@ pipeline {
 		}
 		stage('Deploy') {
 			steps {
-				echo 'Work'
+				bat "ROBOCOPY \"${env.WORKSPACE}\\WindowsPlayground\\bin\\Debug\\\" \"${env.WORKSPACE}\\Deploy\\\""
 			}
 		}
 	}
