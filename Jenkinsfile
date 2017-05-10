@@ -16,7 +16,7 @@ pipeline {
 	stages {
 		stage('Build') { 
 			environment {
-				MSBUILD_SWITCHES = "/m /nologo /v:q /p:Configuration=${env.CONFIGURATION} /p:Platform=\"${env.PLATFORM}\" /p:ProductVersion=${env.VERSION}"
+				MSBUILD_SWITCHES = "/m /v:q /val /nologo /p:Configuration=${env.CONFIGURATION} /p:Platform=\"${env.PLATFORM}\" /p:ProductVersion=${env.VERSION}"
             }
 			steps { 
 				bat "nuget restore ${env.SOLUTION_NAME}"
@@ -30,7 +30,7 @@ pipeline {
 		}
 		stage('Archive') {
 			steps {
-				archiveArtifacts "${env.PROJECT_NAME}/bin/${env.CONFIGURATION}/**"
+				archiveArtifacts "${env.PROJECT_NAME}/bin/${env.CONFIGURATION}/**.dll"
 			}
 		}
 		stage('Deploy') {
